@@ -1,0 +1,253 @@
+\documentclass[a4paper]{article}
+
+\usepackage{fullpage} % Package to use full page
+\usepackage{parskip} % Package to tweak paragraph skipping
+\usepackage{tikz} % Package for drawing
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{ctex}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\makeatletter
+\@addtoreset{figure}{section}
+\makeatother
+
+\makeatletter
+\renewcommand \theequation {%
+	\ifnum \c@section>\z@ \@arabic\c@section.\fi \ifnum \c@subsection>\z@
+	\@arabic\c@subsection.\fi\ifnum \c@subsubsection>\z@
+	\@arabic\c@subsubsection.\fi\@arabic\c@equation}
+\@addtoreset{equation}{section}
+\@addtoreset{equation}{subsection}
+%\setcounter{section}{-1}
+\makeatother
+
+\title{最优化方法作业7}
+\author{罗雁天 \\
+2018310742}
+\date{\today}
+
+\begin{document}
+
+%\maketitle
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\begin{titlepage}
+	\begin{center}
+		% Upper part of the page
+		\includegraphics[width=0.4\textwidth]{Tsinghua2.png}\\[1cm]
+		\textsc{\Large \texttt{清华大学电子工程系}}\\[1cm]
+		% Title
+		\HRule \\[1cm]
+		{\Huge \bfseries 最优化方法作业7}\\[0.4cm]
+		\HRule \\[3.5cm]
+		% Author and supervisor
+		\begin{minipage}{0.4\textwidth}
+			\begin{center}
+				\Large
+				\begin{tabular}{cc}
+					\texttt{作者：} & 罗雁天 \\[0.5cm]
+					\texttt{学号：} & 2018310742 \\[0.5cm]
+					\texttt{日期：} & \today
+				\end{tabular}
+			\end{center}
+		\end{minipage}
+		\vfill
+	\end{center}
+\end{titlepage}
+
+\section{}
+$f(x_1,x_2)=10-2(x_2-x_1^2)^2,S=\{(x_1,x_2)|-11\le x_1 \le 1, -1\le x_2\le 1\}$，判断$f(x_1,x_2)$是否为$S$上的凸函数？
+
+\textbf{解}:
+
+计算$f$的梯度和Hessian矩阵如下：
+\begin{equation}
+\begin{aligned}
+\bigtriangledown f &=\left[\frac{\partial f}{\partial x_1},\frac{\partial f}{\partial x_2}\right]^T=[8x_1(x_2-x_1^2),-4(x_2-x_1^2)]^T \\
+\bigtriangledown^2 f &= 
+\left[
+\begin{array}{cc}
+\frac{\partial^2 f}{\partial x_1^2} & \frac{\partial^2  f}{\partial x_1\partial x_2} \\
+\frac{\partial^2 f}{\partial x_2\partial x_1} & \frac{\partial^2 f}{\partial x_2^2}
+\end{array}
+\right]=
+\left[
+\begin{array}{cc}
+8x_2-24x_1^2 & 8x_1 \\
+8x_1 & -4
+\end{array}
+\right]
+\end{aligned}
+\end{equation}
+
+由于$x=[0,1]^T\in S$，但是$\bigtriangledown^2 f(x)=\left[
+\begin{array}{cc}
+8 & 0 \\
+0 & -4
+\end{array}
+\right]$非半正定矩阵，因此$f(x_1,x_2)$不是$S$上的凸函数
+
+\section{}
+给定函数
+\begin{equation*}
+f(x)=\frac{x_1+x_2}{3+x_1^2+x_2^2+x_1x_2}
+\end{equation*}
+求$f(x)$的极小值点
+
+\textbf{解：}
+
+计算$\bigtriangledown f(x)$和$\bigtriangledown^2 f(x)$如下：
+\begin{equation}
+\begin{aligned}
+\bigtriangledown f(x) &=\left[\frac{3-x_1^2-2x_1x_2}{(3+x_1^2+x_2^2+x_1x_2)^2},\frac{3-x_2^2-2x_1x_2}{(3+x_1^2+x_2^2+x_1x_2)^2}\right]^T \\
+\bigtriangledown^2 f(x) &= 
+\left[
+\begin{array}{cc}
+\frac{-18x_1-12x_2+2x_1^3-2x_2^3+6x_1^2x_2}{(3+x_1^2+x_2^2+x_1x_2)^3} & \frac{-12x_1-12x_2+6x_1^2x_2+6x_1x_2^2}{(3+x_1^2+x_2^2+x_1x_2)^3} \\
+\frac{-12x_1-12x_2+6x_1^2x_2+6x_1x_2^2}{(3+x_1^2+x_2^2+x_1x_2)^3}  & \frac{-12x_1-18x_2-2x_1^3+2x_2^3+6x_1x_2^2}{(3+x_1^2+x_2^2+x_1x_2)^3}
+\end{array}
+\right]
+\end{aligned}
+\end{equation}
+
+令$\bigtriangledown f(x)=0$得$\textbf{x}^{(1)}=[1,1]^T,\textbf{x}^{(2)}=[-1,-1]^T$,代入$\bigtriangledown^2 f(x)$中得：
+\begin{equation}
+\begin{aligned}
+\bigtriangledown^2 f(\textbf{x}^{(1)}) &= 
+\left[
+\begin{array}{cc}
+-\frac{1}{9} & -\frac{1}{18} \\
+-\frac{1}{18}  & -\frac{1}{9}
+\end{array}
+\right] \\
+\bigtriangledown^2 f(\textbf{x}^{(2)}) &= 
+\left[
+\begin{array}{cc}
+\frac{1}{9} & \frac{1}{18} \\
+\frac{1}{18}  & \frac{1}{9}
+\end{array}
+\right]
+\end{aligned}
+\end{equation}
+由于$\bigtriangledown^2 f(\textbf{x}^{(1)})$负定，$\bigtriangledown^2 f(\textbf{x}^{(2)})$正定，因此$\textbf{x}^{(2)}=[-1,-1]^T$为极小点
+
+\section{}
+给定非线性规划问题：
+\begin{equation*}
+\begin{aligned}
+\min\quad &f(x_1,x_2)=(x_1-\frac{9}{4})^2+(x_2-2)^2 \\
+s.t.\quad &-x_1^2+x_2\ge 0 \\
+&x_1+x_2\le 6 \\
+&x_1,x_2\ge 0
+\end{aligned}
+\end{equation*}
+判断下列各点是否为最优解：$x^{(1)}=\left[\frac{3}{2},\frac{9}{4}\right]^T,x^{(2)}=\left[\frac{9}{4},2\right]^T,x^{(3)}=[0,2]^T$
+
+\textbf{解：}
+
+原规划问题可以化为如下凸规划问题：
+\begin{equation*}
+\begin{aligned}
+\min\quad &f(x_1,x_2)=(x_1-\frac{9}{4})^2+(x_2-2)^2 \\
+s.t.\quad &-x_1^2+x_2\ge 0 \\
+&-x_1-x_2+6 \ge 0 \\
+&x_1,x_2 \ge 0
+\end{aligned}
+\end{equation*}
+
+因此我们只需要验证KKT条件即可。计算梯度如下，
+\begin{equation}
+\begin{aligned}
+\bigtriangledown f(x) &=\left[2(x_1-\frac{9}{4}),2(x_2-2)\right]^T \\
+\bigtriangledown g_1(x)&=[-2x_1,1]^T \\
+\bigtriangledown g_2(x)&=[-1,-1]^T \\
+\bigtriangledown g_3(x)&=[1,0]^T \\
+\bigtriangledown g_4(x)&=[0,1]^T \\ 
+\end{aligned}
+\end{equation}
+
+\begin{itemize}
+	
+\item 对$x^{(1)}=\left[\frac{3}{2},\frac{9}{4}\right]^T$,
+\begin{equation}
+\left\{
+\begin{array}{c}
+-\frac{3}{2}+3w_1=0 \\
+\frac{1}{2}-w_1=0 \\
+w_1 \ge 0
+\end{array}
+\right.
+\end{equation}
+解得$w_1=\frac{1}{2}$，满足KKT条件，因此$x^{(1)}=\left[\frac{3}{2},\frac{9}{4}\right]^T$是最优解，最优值为$\frac{5}{8}$。
+
+\item 对$x^{(2)}=\left[\frac{9}{4},2\right]^T$,由于不满足第一个不等式约束，因此不是可行解。
+
+\item 对$x^{(3)}=[0,2]^T$,
+\begin{equation}
+\left\{
+\begin{array}{c}
+-\frac{9}{2}-w_3=0 \\
+0=0 \\
+w_3 \ge 0
+\end{array}
+\right.
+\end{equation}
+由第一个式子解得$w_3=-\frac{9}{2}$，不满足第三个式子，因此$x^{(3)}=[0,2]^T$不是最优解
+
+\end{itemize}
+
+\section{}
+求原点$x^{0}=[0,0]^T$到凸集$S=\{x|x_1+x_2\ge4,2x_1+x_2\ge5\}$的最小距离
+
+\textbf{解：}
+
+原问题即是求解如下规划问题：
+\begin{equation*}
+\begin{aligned}
+\min\quad &f(x_1,x_2)=x_1^2+x_2^2 \\
+s.t.\quad &x_1+x_2-4\ge 0 \\
+&2x_1+x_2-5 \ge 0
+\end{aligned}
+\end{equation*}
+
+计算梯度如下，
+\begin{equation}
+\begin{aligned}
+\bigtriangledown f(x) &=[2x_1,2x_2]^T \\
+\bigtriangledown g_1(x)&=[1,1]^T \\
+\bigtriangledown g_2(x)&=[2,1]^T
+\end{aligned}
+\end{equation}
+
+KKT条件如下：
+\begin{equation}
+\left\{
+\begin{array}{c}
+2x_1-w_1-2w_2=0 \\
+2x_2-w_1-w_2=0 \\
+w_1(x_1+x_2-4)=0 \\
+w_2(2x_1+x_2-5)=0 \\
+w_1\ge 0 \\
+w_2\ge 0
+\end{array}
+\right.
+\end{equation}
+解得$x_1=2,x_2=2,w_1=4,w_2=0$满足KKT条件，因此最优解为$\bar{x}=[2,2]^T$，最小距离为$2\sqrt{2}$
+%计算$\bigtriangledown f(x)$和$\bigtriangledown^2 f(x)$如下：
+%\begin{equation}
+%\begin{aligned}
+%\bigtriangledown f(x) &=\left[2(x_1-\frac{9}{4}),2(x_2-2)\right]^T \\
+%\bigtriangledown^2 f(x) &= 
+%\left[
+%\begin{array}{cc}
+%2 & 0 \\
+%0  & 2
+%\end{array}
+%\right]
+%\end{aligned}
+%\end{equation}
+
+
+\end{document}

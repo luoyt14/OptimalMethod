@@ -1,0 +1,106 @@
+\documentclass[a4paper]{article}
+
+\usepackage{fullpage} % Package to use full page
+\usepackage{parskip} % Package to tweak paragraph skipping
+\usepackage{tikz} % Package for drawing
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{ctex}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\makeatletter
+\@addtoreset{figure}{section}
+\makeatother
+
+\makeatletter
+\renewcommand \theequation {%
+	\ifnum \c@section>\z@ \@arabic\c@section.\fi \ifnum \c@subsection>\z@
+	\@arabic\c@subsection.\fi\ifnum \c@subsubsection>\z@
+	\@arabic\c@subsubsection.\fi\@arabic\c@equation}
+\@addtoreset{equation}{section}
+\@addtoreset{equation}{subsection}
+%\setcounter{section}{-1}
+\makeatother
+
+\title{最优化方法作业10}
+\author{罗雁天 \\
+2018310742}
+\date{\today}
+
+\begin{document}
+
+%\maketitle
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\begin{titlepage}
+	\begin{center}
+		% Upper part of the page
+		\includegraphics[width=0.4\textwidth]{Tsinghua2.png}\\[1cm]
+		\textsc{\Large \texttt{清华大学电子工程系}}\\[1cm]
+		% Title
+		\HRule \\[1cm]
+		{\Huge \bfseries 最优化方法作业10}\\[0.4cm]
+		\HRule \\[3.5cm]
+		% Author and supervisor
+		\begin{minipage}{0.4\textwidth}
+			\begin{center}
+				\Large
+				\begin{tabular}{cc}
+					\texttt{作者：} & 罗雁天 \\[0.5cm]
+					\texttt{学号：} & 2018310742 \\[0.5cm]
+					\texttt{日期：} & \today
+				\end{tabular}
+			\end{center}
+		\end{minipage}
+		\vfill
+	\end{center}
+\end{titlepage}
+
+\section{}
+定义算法映射如下:
+\begin{equation}
+A(x)=\left\{
+\begin{array}{cc}
+\left[\frac{3}{2}+\frac{1}{4}x,1+\frac{1}{2}x\right] & \mbox{当}x\ge 2 \\
+\frac{1}{2}(x+1) & \mbox{当}x<2
+\end{array}
+\right.
+\end{equation}
+证明$A$在$x=2$处不是闭的
+
+\begin{proof}
+	取$x^{(k)}=2-\frac{1}{k}$，则$y^{(k)}=\frac{1}{2}(2-\frac{1}{k}+1)=\frac{3}{2}-\frac{1}{2k}$
+	
+	当$k\to +\infty$时，$\bar{x}=\lim\limits_{k\to +\infty}x^{(k)}=2,\bar{y}=\lim\limits_{k\to +\infty}y^{(k)}=\frac{3}{2}$
+	
+	但$A(\bar{x})=2\neq \bar{y}$，因此，$A$在$x=2$处不是闭的
+\end{proof}
+
+\section{}
+在集合$X=[0,1]$上定义算法映射:
+\begin{equation}
+A(x)=\left\{
+\begin{array}{cc}
+[0,x) & 0<x\le 1 \\
+0 & x=0
+\end{array}
+\right.
+\end{equation}
+讨论在以下各点处$A$是否为闭的: $x^{(1)}=0,x^{(2)}=\frac{1}{2}$
+\begin{proof}[解]
+	
+	
+	\begin{itemize}
+		\item 对于$x^{(1)}=0$，$A$在该点处是闭的；
+		\item 对于$x^{(2)}=\frac{1}{2}$，设$x^{(k)}=\frac{1}{2}+\frac{1}{k}, y^{(k)}=\frac{1}{2}+\frac{1}{2k}$
+		
+		所以$\bar{x}=\lim\limits_{k\to +\infty}x^{(k)}=\frac{1}{2},\bar{y}=\lim\limits_{k\to +\infty}y^{(k)}=\frac{1}{2}$
+		
+		由于$A(\bar{x})=[0,\frac{1}{2})$，因此$\bar{y}=\frac{1}{2}\notin A(\bar{x})$，所以$A$在$x^{(2)}=\frac{1}{2}$处不是闭的
+	\end{itemize}
+
+\end{proof}
+
+
+\end{document}

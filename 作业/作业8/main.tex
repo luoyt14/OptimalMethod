@@ -1,0 +1,147 @@
+\documentclass[a4paper]{article}
+
+\usepackage{fullpage} % Package to use full page
+\usepackage{parskip} % Package to tweak paragraph skipping
+\usepackage{tikz} % Package for drawing
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{ctex}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\makeatletter
+\@addtoreset{figure}{section}
+\makeatother
+
+\makeatletter
+\renewcommand \theequation {%
+	\ifnum \c@section>\z@ \@arabic\c@section.\fi \ifnum \c@subsection>\z@
+	\@arabic\c@subsection.\fi\ifnum \c@subsubsection>\z@
+	\@arabic\c@subsubsection.\fi\@arabic\c@equation}
+\@addtoreset{equation}{section}
+\@addtoreset{equation}{subsection}
+%\setcounter{section}{-1}
+\makeatother
+
+\title{最优化方法作业8}
+\author{罗雁天 \\
+2018310742}
+\date{\today}
+
+\begin{document}
+
+%\maketitle
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\begin{titlepage}
+	\begin{center}
+		% Upper part of the page
+		\includegraphics[width=0.4\textwidth]{Tsinghua2.png}\\[1cm]
+		\textsc{\Large \texttt{清华大学电子工程系}}\\[1cm]
+		% Title
+		\HRule \\[1cm]
+		{\Huge \bfseries 最优化方法作业8}\\[0.4cm]
+		\HRule \\[3.5cm]
+		% Author and supervisor
+		\begin{minipage}{0.4\textwidth}
+			\begin{center}
+				\Large
+				\begin{tabular}{cc}
+					\texttt{作者：} & 罗雁天 \\[0.5cm]
+					\texttt{学号：} & 2018310742 \\[0.5cm]
+					\texttt{日期：} & \today
+				\end{tabular}
+			\end{center}
+		\end{minipage}
+		\vfill
+	\end{center}
+\end{titlepage}
+
+\section{}
+给定非线性规划问题：
+\begin{equation}
+\begin{aligned}
+\max \quad &b^Tx \qquad x\in \mathbb{R}^n \\
+s.t.\quad &x^Tx\le 1
+\end{aligned}
+\end{equation}
+其中$b\ne 0$，证明向量$\bar{x}=\frac{b}{||b||}$满足最优性的充分条件
+
+\begin{proof}
+	原问题可以化为如下的优化问题：
+	\begin{equation}
+	\label{eq1}
+	\begin{aligned}
+	\min \quad &-b^Tx \qquad x\in \mathbb{R}^n\\
+	s.t. \quad &-x^Tx+1\ge 0
+	\end{aligned}
+	\end{equation}
+	KKT条件如下：
+	\begin{equation}
+	\begin{aligned}
+	-b+2wx&=0\\
+	w(-x^Tx+1)&=0 \\
+	w&\ge 0
+	\end{aligned}
+	\end{equation}
+	可以验证$\bar{x}=\frac{b}{||b||}$是KKT点，此时$w=\frac{1}{2}||b||>0$符合条件。又由于目标函数是线性函数，可以看成凸函数，$\bigtriangledown^2(g)=-2$，所以约束条件是凹函数，因此规划问题\ref{eq1}为凸规划问题。因此，向量$\bar{x}=\frac{b}{||b||}$满足最优性的充分条件。
+\end{proof}
+
+\section{}
+给定非线性规划问题：
+\begin{equation}
+\begin{aligned}
+\min \quad &c^Tx \\
+s.t. \quad &Ax=0 \\
+& x^Tx \le \gamma^2
+\end{aligned}
+\end{equation}
+其中$A$为$m\times n$的矩阵($m<n$),$A$的秩为$m$, $c\in \mathbb{R}^n$且$c\neq 0$, $\gamma$是一个正数，试求问题的最优解及目标函数最优值。
+
+\textbf{解：}
+
+原问题可以化为如下规划问题：
+
+\begin{equation}
+\begin{aligned}
+\min \quad &c^Tx \\
+s.t. \quad &Ax=0 \\
+& -x^Tx + \gamma^2 \ge 0
+\end{aligned}
+\end{equation}
+
+Lagrange函数为:
+\begin{equation}
+L(x,w,v)=c^Tx-w(-x^Tx+\gamma^2)-v^T(Ax)
+\end{equation}
+KKT条件如下：
+
+\begin{equation}
+\label{eq2}
+\left\{
+\begin{array}{c}
+c-A^Tv+2wx=0 \\
+w(x^Tx-\gamma^2)=0 \\
+x^Tx-\gamma^2\ge 0 \\
+Ax=0 \\
+w\ge 0
+\end{array}
+\right.
+\end{equation}
+由于$A$行满秩，因此$AA^T$可逆，解式\ref{eq2}得：
+
+\begin{equation}
+\begin{aligned}
+v&=(AA^T)^{-1}Ac \\
+w&=-\frac{f_{min}}{2\gamma^2} \\
+f_{min}&=-\gamma\sqrt{c^T(c-A^Tv)} \\
+x&=\frac{\gamma^2}{f_{min}}(c-A^Tv)\quad(f_{min}\ne 0)
+\end{aligned}
+\end{equation}
+
+又由于原问题为凸规划问题，所以：
+\begin{enumerate}
+	\item 当$c=A^Tv$时，最优解不唯一，最优值为$f_{min}=0$
+	\item 当$c\neq A^Tv$时，最优值为$f_{min}=-\gamma\sqrt{c^T(c-A^Tv)}$,最优解为$x=\frac{\gamma^2}{f_{min}}(c-A^Tv)\quad(f_{min}\ne 0)$
+\end{enumerate}
+\end{document}
