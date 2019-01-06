@@ -1,0 +1,149 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{fullpage} % Package to use full page
+\usepackage{parskip} % Package to tweak paragraph skipping
+\usepackage{tikz} % Package for drawing
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{ctex}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{subeqnarray}
+\usepackage{cases}
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\makeatletter
+\@addtoreset{figure}{section}
+\makeatother
+
+\makeatletter
+\renewcommand \theequation {%
+	\ifnum \c@section>\z@ \@arabic\c@section.\fi \ifnum \c@subsection>\z@
+	\@arabic\c@subsection.\fi\ifnum \c@subsubsection>\z@
+	\@arabic\c@subsubsection.\fi\@arabic\c@equation}
+\@addtoreset{equation}{section}
+\@addtoreset{equation}{subsection}
+%\setcounter{section}{-1}
+\makeatother
+
+\title{最优化方法作业14}
+\author{罗雁天 \\
+2018310742}
+\date{\today}
+
+\begin{document}
+
+%\maketitle
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\begin{titlepage}
+	\begin{center}
+		% Upper part of the page
+		\includegraphics[width=0.4\textwidth]{Tsinghua2.png}\\[1cm]
+		\textsc{\Large \texttt{清华大学电子工程系}}\\[1cm]
+		% Title
+		\HRule \\[1cm]
+		{\Huge \bfseries 最优化方法作业14}\\[0.4cm]
+		\HRule \\[3.5cm]
+		% Author and supervisor
+		\begin{minipage}{0.4\textwidth}
+			\begin{center}
+				\Large
+				\begin{tabular}{cc}
+					\texttt{作者：} & 罗雁天 \\[0.5cm]
+					\texttt{学号：} & 2018310742 \\[0.5cm]
+					\texttt{日期：} & \today
+				\end{tabular}
+			\end{center}
+		\end{minipage}
+		\vfill
+	\end{center}
+\end{titlepage}
+
+\section{}
+考虑下列问题：
+\begin{equation}
+\begin{aligned}
+\min \quad &x_1x_2 \\
+s.t. \quad &g(x)=-2x_1+x_2+3\ge 0
+\end{aligned}
+\end{equation}
+\begin{enumerate}[(1)]
+	\item 用二阶最优性条件证明点$\bar{x}=\left[\frac{3}{4},-\frac{3}{2}\right]^T$是局部最优解，并说明它是否为全局最优解
+	\item 定义障碍函数为$G(x,r)=x_1x_2-r\ln g(x)$，试用内点法求解此问题，并说明内点法产生的序列趋向点$\bar{x}$
+\end{enumerate}
+
+\begin{proof}[解]
+	\begin{enumerate}[(1)]
+		\item 计算梯度如下：
+		\begin{equation}
+		\begin{aligned}
+		\bigtriangledown f(\bar{x})&=\left[
+		\begin{array}{c}
+		x_2 \\
+		x_1
+		\end{array}
+		\right]=\left[
+		\begin{array}{c}
+		-\frac{3}{2} \\
+		\frac{3}{4}
+		\end{array}
+		\right]\\
+		\bigtriangledown g(\bar{x})&=\left[
+		\begin{array}{c}
+		-2 \\
+		1
+		\end{array}
+		\right]
+		\end{aligned}
+		\end{equation}
+		由于$g(x)\ge 0$是起作用约束，因此令$\bigtriangledown f(\bar{x})-w\bigtriangledown g(\bar{x})=0$得$w=\frac{3}{4}>0$，因此$\bar{x}$是KKT点
+		
+		取Lagrange函数为$L(x,w)=x_1x_2-w(-2x_1+x_2+3)$，计算其Hessian矩阵如下：
+		\begin{equation}
+		\bigtriangledown^2_x L(x,w)=\left[
+		\begin{array}{cc}
+		0 & 1 \\
+		1 & 0
+		\end{array}
+		\right]
+		\end{equation}
+		令:
+		\begin{equation}
+		\bigtriangledown g(\bar{x})^T\mathbf{d}=[-2,1]\left[
+		\begin{array}{c}
+		d_1 \\
+		d_2
+		\end{array}
+		\right]=0
+		\end{equation}
+		得$d_2=2d_1$，因此方向集为：
+		\begin{equation}
+		G=\{\mathbf{d}|d_2=2d_1,\mathbf{d}\ne 0\}
+		\end{equation}
+		因此对$\forall \mathbf{d}\in G$有：
+		\begin{equation}
+		\mathbf{d}^T\bigtriangledown^2_x L(x,w)\mathbf{d}=4d_1^2>0
+		\end{equation}
+		因此$\bar{x}=\left[\frac{3}{4},-\frac{3}{2}\right]^T$是局部最优解。取$x=[-3,3]^T$目标函数值为$-9$比$\bar{x}$处的目标函数值更小，因此$\bar{x}$不是全局最优解
+		
+		\item 令：
+		\begin{equation}
+		\left\{
+		\begin{array}{c}
+		\frac{\partial G(x,r)}{\partial x_1} =x_2+\frac{2r}{-2x_1+x_2+3}=0 \\
+		\frac{\partial G(x,r)}{\partial x_2} =x_1-\frac{r}{-2x_2+x_2+3}=0
+		\end{array}
+		\right.
+		\end{equation}
+		得：
+		\begin{equation}
+		x(r)=\left(\frac{3+\sqrt{9-16r}}{8},-\frac{3+\sqrt{9-16r}}{4}\right)^T
+		\end{equation}
+		令$r\to 0$得：
+		\begin{equation}
+		x(r)\to \left(\frac{3}{4},-\frac{3}{2}\right)^T=\bar{x}
+		\end{equation}
+	\end{enumerate}
+\end{proof}
+
+\end{document}

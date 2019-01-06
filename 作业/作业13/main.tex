@@ -1,0 +1,184 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{fullpage} % Package to use full page
+\usepackage{parskip} % Package to tweak paragraph skipping
+\usepackage{tikz} % Package for drawing
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{ctex}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{subeqnarray}
+\usepackage{cases}
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\makeatletter
+\@addtoreset{figure}{section}
+\makeatother
+
+\makeatletter
+\renewcommand \theequation {%
+	\ifnum \c@section>\z@ \@arabic\c@section.\fi \ifnum \c@subsection>\z@
+	\@arabic\c@subsection.\fi\ifnum \c@subsubsection>\z@
+	\@arabic\c@subsubsection.\fi\@arabic\c@equation}
+\@addtoreset{equation}{section}
+\@addtoreset{equation}{subsection}
+%\setcounter{section}{-1}
+\makeatother
+
+\title{最优化方法作业13}
+\author{罗雁天 \\
+2018310742}
+\date{\today}
+
+\begin{document}
+
+%\maketitle
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\begin{titlepage}
+	\begin{center}
+		% Upper part of the page
+		\includegraphics[width=0.4\textwidth]{Tsinghua2.png}\\[1cm]
+		\textsc{\Large \texttt{清华大学电子工程系}}\\[1cm]
+		% Title
+		\HRule \\[1cm]
+		{\Huge \bfseries 最优化方法作业13}\\[0.4cm]
+		\HRule \\[3.5cm]
+		% Author and supervisor
+		\begin{minipage}{0.4\textwidth}
+			\begin{center}
+				\Large
+				\begin{tabular}{cc}
+					\texttt{作者：} & 罗雁天 \\[0.5cm]
+					\texttt{学号：} & 2018310742 \\[0.5cm]
+					\texttt{日期：} & \today
+				\end{tabular}
+			\end{center}
+		\end{minipage}
+		\vfill
+	\end{center}
+\end{titlepage}
+
+\section{}
+考虑下列问题：
+\begin{equation}
+\begin{aligned}
+\min\quad &x_1^2+x_1x_2+2x_2^2-6x_1-2x_2-12x_3 \\
+s.t.\quad &x_1+x_2+x_3=2 \\
+&-x_1+2x_2\le 3\\
+&x_1,x_2,x_3\ge 0
+\end{aligned}
+\end{equation}
+求出在点$\hat{x}=(1,1,0)^T$处的一个下降可行方向.
+\begin{proof}[解]
+目标函数$f(x)=x_1^2+x_1x_2+2x_2^2-6x_1-2x_2-12x_3$，计算$\hat{x}$处导数如下：
+\begin{equation}
+\bigtriangledown f(\hat{x})=\left[
+\begin{array}{c}
+2x_1+x_2-6 \\
+x_1+4x_2-2 \\
+-12
+\end{array}
+\right]=\left[
+\begin{array}{c}
+-3 \\
+3 \\
+-12
+\end{array}
+\right]
+\end{equation}
+
+在$\hat{x}=[1,1,0]$处的起作用约束有：
+
+\begin{equation}
+\begin{aligned}
+x_1+x_2+x_3&=2 \\
+x_3 \ge 0
+\end{aligned}
+\end{equation}
+
+因此在$\hat{x}$处的可行方向满足以下条件：
+\begin{equation}
+\left\{
+\begin{aligned}
+d_1+d_2+d_3&=0 \\
+d_3&\ge 0 \\
+\bigtriangledown f(\hat{x})^Td<0 &\Rightarrow -3d_1+3d_2-12d_3<0
+\end{aligned}
+\right.
+\end{equation}
+
+因此可以取$d=[0,-1,1]^T$作为下降可行方向
+\end{proof}
+
+\section{}
+考虑下列问题:
+\begin{equation}
+\begin{aligned}
+\min\quad &f(x) \\
+s.t.\quad &g_i(x)\ge 0\quad i=1,2,\cdots,m \\
+&h_j(x)=0\quad j=1,2,\cdots,l
+\end{aligned}
+\end{equation}
+设$\hat{x}$是可行点，$I=\{i|g_i(\hat{x})=0\}$
+
+证明$\hat{x}$为KKT点的充要条件是下列问题的目标函数的最优值为零：
+\begin{equation}
+\label{LP}
+\begin{aligned}
+\min \quad& \bigtriangledown f(\hat{x})^Td\\
+s.t. \quad& \bigtriangledown g_i(\hat{x})^Td\ge 0\quad i\in I \\
+& \bigtriangledown h_j(\hat{x})^Td=0\quad j=1,2,\cdots,l \\
+& -1\le d_j\le 1\quad j=1,2,\cdots,n
+\end{aligned}
+\end{equation}
+
+\begin{proof}
+	$\hat{x}$为KKT点的充要条件为，存在乘子$w_i\ge 0(i\in I)$和$v_j(j=1,2,\cdots,l)$使得：
+	\begin{equation}
+	\label{1}
+	\bigtriangledown f(\hat{x})-\sum_{i\in I}w_i\bigtriangledown g_i(\hat{x})-\sum_{j=1}^{l}v_j\bigtriangledown h_j(\hat{x})=0
+	\end{equation}
+	
+	设$A_1=[\bigtriangledown g_{i_1}(\hat{x}),\bigtriangledown g_{i_2}(\hat{x}),\cdots,\bigtriangledown g_{i_k}(\hat{x})]$,$w=[w_1,w_2,\cdots,w_k]^T$,
+	
+	$B=[\bigtriangledown h_1(\hat{x}),\bigtriangledown h_2(\hat{x}),\cdots,\bigtriangledown h_l(\hat{x}),]$,$v=[v_1,v_2,\cdots,v_l]^T=p-q$
+	
+	则式(\ref{1})可以写作:
+	
+	\begin{equation}
+	\label{2}
+	\left[-A_1,-B,B\right]\left[
+	\begin{array}{c}
+	w\\p\\q
+	\end{array}\right]=-\bigtriangledown f(\hat{x}),\qquad
+	\left[
+	\begin{array}{c}
+	w\\p\\q
+	\end{array}\right]\ge 0
+	\end{equation}
+	
+	根据Farkas定理，系统(\ref{2})有解得充要条件是系统(\ref{3})无解。
+	
+	\begin{equation}
+	\label{3}
+	\left[
+	\begin{array}{c}
+	-A_1^T\\-B^T\\B^T
+	\end{array}
+	\right]d\ge 0,\qquad -\bigtriangledown f(\hat{x})d>0
+	\end{equation}
+	
+	即：
+	\begin{equation}
+	\left\{
+	\begin{array}{c}
+	\bigtriangledown f(\hat{x})d<0 \\
+	A_1^T\ge 0 \\
+	B^Td=0
+	\end{array}
+	\right.
+	\end{equation}
+	无解。因此线性规划(\ref{LP})的最优值为0
+\end{proof}
+\end{document}

@@ -1,0 +1,123 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{fullpage} % Package to use full page
+\usepackage{parskip} % Package to tweak paragraph skipping
+\usepackage{tikz} % Package for drawing
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{ctex}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{subeqnarray}
+\usepackage{cases}
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\makeatletter
+\@addtoreset{figure}{section}
+\makeatother
+
+\makeatletter
+\renewcommand \theequation {%
+	\ifnum \c@section>\z@ \@arabic\c@section.\fi \ifnum \c@subsection>\z@
+	\@arabic\c@subsection.\fi\ifnum \c@subsubsection>\z@
+	\@arabic\c@subsubsection.\fi\@arabic\c@equation}
+\@addtoreset{equation}{section}
+\@addtoreset{equation}{subsection}
+%\setcounter{section}{-1}
+\makeatother
+
+\title{最优化方法作业12}
+\author{罗雁天 \\
+2018310742}
+\date{\today}
+
+\begin{document}
+
+%\maketitle
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\begin{titlepage}
+	\begin{center}
+		% Upper part of the page
+		\includegraphics[width=0.4\textwidth]{Tsinghua2.png}\\[1cm]
+		\textsc{\Large \texttt{清华大学电子工程系}}\\[1cm]
+		% Title
+		\HRule \\[1cm]
+		{\Huge \bfseries 最优化方法作业12}\\[0.4cm]
+		\HRule \\[3.5cm]
+		% Author and supervisor
+		\begin{minipage}{0.4\textwidth}
+			\begin{center}
+				\Large
+				\begin{tabular}{cc}
+					\texttt{作者：} & 罗雁天 \\[0.5cm]
+					\texttt{学号：} & 2018310742 \\[0.5cm]
+					\texttt{日期：} & \today
+				\end{tabular}
+			\end{center}
+		\end{minipage}
+		\vfill
+	\end{center}
+\end{titlepage}
+
+\section{}
+设$p^{(1)},p^{(2)},\cdots,p^{(n)}\in \mathbb{R}^n$为一组线性无关向量，$H$是$n$阶对称正定矩阵，令向量$d^{(k)}$为：
+\begin{equation}
+d^{(k)}=\left\{
+\begin{array}{ll}
+p^{(k)},&k=1 \\
+p^{(k)}-\sum_{i=1}^{k-1}\left[\frac{d^{(i)T}Hp^{(k)}}{d^{(i)T}Hd^{(i)}}\right]d^{(i)},&k=2,\cdots,n
+\end{array}
+\right.
+\end{equation}
+证明$d^{(1)},d^{(2)},\cdots,d^{(n)}$关于$H$共轭
+
+\begin{proof}
+	由数学归纳法：
+\begin{itemize}
+	\item 
+
+    当$k=2$时，
+    \begin{equation}
+    d^{(1)T}Hd^{(2)}=p^{(1)T}H\left(p^{(1)}-\frac{p^{(1)T}Hp^{(1)}}{p^{(1)T}Hp^{(1)}}p^{(1)}\right)=0
+    \end{equation}
+    即$d^{(1)},d^{(2)}$关于$H$共轭；
+    
+    \item  假设$k<n$时，$d^{(1)},d^{(2)},\cdots,d^{(k)}$关于$H$共轭
+    
+    \item 那么当$k=n$时，
+    \begin{equation}
+    \begin{aligned}
+    d^{(i)T}Hd^{(j)}&=d^{(i)T}H\left(p^{(j)}-\sum_{k=1}^{j-1}\left[\frac{d^{(k)T}Hp^{(j)}}{d^{(k)T}Hd^{(k)}}\right]d^{(k)}\right) \\
+    &=d^{(i)T}Hp^{(j)}-\sum_{k=1}^{j-1}\left[\frac{d^{(k)T}Hp^{(j)}}{d^{(k)T}Hd^{(k)}}\right]d^{(i)T}Hd^{(k)} \\
+    &=d^{(i)T}Hp^{(j)}-\left[\frac{d^{(i)T}Hp^{(j)}}{d^{(i)T}Hd^{(i)}}\right]d^{(i)T}Hd^{(i)} \\
+    &= d^{(i)T}Hp^{(j)}-d^{(i)T}Hp^{(j)} \\
+    &=0
+    \end{aligned}
+    \end{equation}
+    即，$d^{(i)},d^{(j)}$关于$H$共轭
+\end{itemize}
+    综上所述，由数学归纳法，$d^{(1)},d^{(2)},\cdots,d^{(n)}$关于$H$共轭
+\end{proof}
+
+\newpage
+\section{}
+设将FR共轭梯度法用于有三个变量的函数$f(x)$，第1次迭代，搜索方向$d^{(1)}=[1,-1,2]^T$，沿$d^{(1)}$作精确一维搜索，得到点$x^{(2)}$，又设
+\begin{equation}
+\frac{\partial f(x^{(2)})}{\partial x_1}=-2,\quad \frac{\partial f(x^{(2)})}{\partial x_2}=-2
+\end{equation}
+那么按照共轭梯度法的规定，从$x^{(2)}$出发的搜索方向是什么？
+
+\begin{proof}[解]
+	记$g_i=\bigtriangledown f(x^{(i)})$.由一维搜索可知，$g_2^Td^{(1)}=0$，解得：$g_2=[-2,-2,0]^T$
+	
+	根据FR共轭梯度法规定：
+	\begin{equation}
+	\begin{aligned}
+	&g_1=-d^{(1)}=[-1,1,-2]^T \\
+	&\beta_1=\frac{||g_2||^2}{||g_1||^2}=\frac{4}{3}
+	\end{aligned}
+	\end{equation}
+	
+	所以，$d^{(2)}=-g_2+\beta_1 d^{(1)}=[\frac{10}{3},\frac{2}{3},\frac{8}{3}]^T$
+\end{proof}
+\end{document}

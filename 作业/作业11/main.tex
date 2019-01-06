@@ -1,0 +1,225 @@
+\documentclass[a4paper]{article}
+
+\usepackage{fullpage} % Package to use full page
+\usepackage{parskip} % Package to tweak paragraph skipping
+\usepackage{tikz} % Package for drawing
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{ctex}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{subeqnarray}
+\usepackage{cases}
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\makeatletter
+\@addtoreset{figure}{section}
+\makeatother
+
+\makeatletter
+\renewcommand \theequation {%
+	\ifnum \c@section>\z@ \@arabic\c@section.\fi \ifnum \c@subsection>\z@
+	\@arabic\c@subsection.\fi\ifnum \c@subsubsection>\z@
+	\@arabic\c@subsubsection.\fi\@arabic\c@equation}
+\@addtoreset{equation}{section}
+\@addtoreset{equation}{subsection}
+%\setcounter{section}{-1}
+\makeatother
+
+\title{最优化方法作业11}
+\author{罗雁天 \\
+2018310742}
+\date{\today}
+
+\begin{document}
+
+%\maketitle
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\begin{titlepage}
+	\begin{center}
+		% Upper part of the page
+		\includegraphics[width=0.4\textwidth]{Tsinghua2.png}\\[1cm]
+		\textsc{\Large \texttt{清华大学电子工程系}}\\[1cm]
+		% Title
+		\HRule \\[1cm]
+		{\Huge \bfseries 最优化方法作业11}\\[0.4cm]
+		\HRule \\[3.5cm]
+		% Author and supervisor
+		\begin{minipage}{0.4\textwidth}
+			\begin{center}
+				\Large
+				\begin{tabular}{cc}
+					\texttt{作者：} & 罗雁天 \\[0.5cm]
+					\texttt{学号：} & 2018310742 \\[0.5cm]
+					\texttt{日期：} & \today
+				\end{tabular}
+			\end{center}
+		\end{minipage}
+		\vfill
+	\end{center}
+\end{titlepage}
+
+\section{}
+给定函数$f(x)=(6+x_1+x_2)^2+(2-3x_1-3x_2-x_1x_2)^2$,求在点$\hat{x}=[-4,6]^T$处的牛顿方向和最速下降方向
+
+\begin{proof}[解]
+	计算$\bigtriangledown f(x)$和$\bigtriangledown^2 f(x)$如下：
+	\begin{equation}
+	\begin{aligned}
+	\bigtriangledown f(x)&=\left[
+	\begin{array}{c}
+	2(6+x_1+x_2)+2(2-3x_1-3x_2-x_1x_2)(-3-x_2) \\
+	2(6+x_1+x_2)+2(2-3x_1-3x_2-x_1x_2)(-3-x_1)
+	\end{array}
+	\right] \\
+	\bigtriangledown^2 f(x)&=\left[
+	\begin{array}{cc}
+	2(x_2^2+6x_2+10) & 2(2x_1x_2+6(x_1+x_2)+8) \\
+	2(2x_1x_2+6(x_1+x_2)+8) & 2(x_1^2+6x_1+10)
+	\end{array}
+	\right]
+	\end{aligned}
+	\end{equation}
+	所以，$\bigtriangledown f(\hat{x})$和$\bigtriangledown^2 f(\hat{x})$为：
+	\begin{equation}
+	\begin{aligned}
+	\bigtriangledown f(\hat{x})&=\left[
+	\begin{array}{c}
+	-344 \\
+	56
+	\end{array}
+	\right] \\
+	\bigtriangledown^2 f(\hat{x})&=\left[
+	\begin{array}{cc}
+	164 & -56 \\
+	-56 & 4
+	\end{array}
+	\right] \\
+	\bigtriangledown^2 f(\hat{x})^{-1}&=-\frac{1}{2480}\left[
+	\begin{array}{cc}
+	4 & 56 \\
+	56 & 164
+	\end{array}
+	\right]
+	\end{aligned} 
+	\end{equation}
+	
+	\begin{enumerate}[(i)]
+		\item $\hat{x}$处的牛顿方向为$d=-\bigtriangledown^2f(\hat{x})^{-1}\bigtriangledown f(\hat{x})=\left[\frac{22}{31},-\frac{126}{31}\right]^T$
+		\item $\hat{x}$处的最速下降方向为$d=-\bigtriangledown f(\hat{x})=[344,-56]^T$
+	\end{enumerate}
+\end{proof}
+
+\section{}
+设有函数$f(x)=\frac{1}{2}x^TAx+b^Tx+c$，其中$A$为对称正定矩阵。又设$x^{(1)}\ne \bar{x}$可表示为$x^{(1)}=\bar{x}+\mu p$，其中$\bar{x}$是$f(x)$的极小点，$p$是$A$的属于特征值$\lambda$的特征向量。证明：
+\begin{equation}
+\begin{aligned}
+&(1)\quad \bigtriangledown f(x^{(1)})=\mu \lambda p \\
+&(2)\quad \mbox{如果从}x^{(1)}\mbox{出发，沿最速下降方向做一维搜索，则一步达到极小点}\bar{x}
+\end{aligned}
+\end{equation}
+
+\begin{proof}
+	\begin{enumerate}[(1)]
+		\item 计算$\bigtriangledown f(x)=Ax+b$，由于$\bar{x}$是$f(x)$的极小值点，因此$\bigtriangledown f(\bar{x})=A\bar{x}+b=0$，将$x^{(1)}=\bar{x}+\mu p$带入得：
+		\begin{equation}
+		\begin{aligned}
+		\bigtriangledown f(x^{(1)})&=A(x^{(1)})+b \\
+		&=A(\bar{x}+\mu p)+b \\
+		&=A\mu p +A\bar{x}+b \\
+		&=\mu A p=\mu \lambda p
+		\end{aligned}
+		\end{equation}
+		
+		\item 由(1)中的结论，从$x^{(1)}$出发进行一维搜索，$x^{(2)}=x^{(1)}-\beta\bigtriangledown f(x^{(1)})=\bar{x}+(1-\beta\lambda)\mu p$
+		
+		由于$A$对称正定，因此$\lambda>0$，因此取$\beta=1/\lambda$即可一步迭代达到极小点$\bar{x}$
+	\end{enumerate}
+\end{proof}
+
+\section{}
+设$A$为$n$阶实对称正定矩阵，证明$A$的$n$个互相正交的特征向量$p^{(1)},p^{(2)},\cdots,p^{(n)}$关于$A$共轭
+
+\begin{proof}
+	设$Ap^{i}=\lambda_ip^{(i)},i=1,2,\cdots,n$，已知$p^{(i)T}p^{(j)}=0,i\ne j$，因此对于任意$i\ne j,i,j=1,2,\cdots,n$都有：
+	\begin{equation}
+	p^{(i)T}Ap^{(j)}=p^{(i)T}\lambda_jp^{(j)}=\lambda_jp^{(i)T}p^{(j)}=0
+	\end{equation}
+	所以，$p^{(1)},p^{(2)},\cdots,p^{(n)}$关于$A$共轭
+\end{proof}
+
+\section{}
+设$A$为对称正定矩阵，非零向量$p^{(1)},p^{(2)},\cdots,p^{(n)}\in E^n$关于矩阵$A$共轭。证明：
+\begin{equation}
+\begin{aligned}
+&(1)\quad x=\sum_{i=1}^{n}\frac{p^{(i)T}Ax}{p^{(i)T}Ap^{(i)}}p^{(i)},\forall x\in E^n \\
+&(2)\quad A^{-1}=\sum_{i=1}^{n}\frac{p^{(i)}p^{(i)T}}{p^{(i)T}Ap^{(i)}}
+\end{aligned}
+\end{equation}
+
+\begin{proof}
+	\begin{enumerate}[(1)]
+		\item 由题设可知，非零向量$p^{(1)},p^{(2)},\cdots,p^{(n)}\in E^n$线性无关，所以可以构成$E^n$的一组基，因此可以将$x$表示为其线性组合的形式：
+		\begin{equation}
+		\label{eq1}
+		x=\sum_{i=1}^{n}\lambda_ip^{(i)}
+		\end{equation}
+		对上式两边左乘$p^{(i)T}A$，又由于$p^{(i)T}Ap^{(j)}=0,\forall i\ne j$，因此：
+		\begin{equation}
+		\begin{aligned}
+		p^{(i)T}Ax&=p^{(i)T}\sum_{i=1}^{n}\lambda_iAp^{(i)}\\
+		&=\lambda_ip^{(i)T}Ap^{(i)}
+		\end{aligned}
+		\end{equation}
+		所以：
+		\begin{equation}
+		\lambda_i=\frac{p^{(i)T}Ax}{p^{(i)T}Ap^{(i)}}
+		\end{equation}
+		带入\ref{eq1}中即可得到：
+		\begin{equation}
+		x=\sum_{i=1}^{n}\frac{p^{(i)T}Ax}{p^{(i)T}Ap^{(i)}}p^{(i)},\forall x\in E^n
+		\end{equation}
+		
+		\item 不妨设$A^{-1}=[\beta_1,\beta_2,\cdots,\beta_n]$，则由第一问的结论：
+		\begin{equation}
+		\beta_j=\sum_{i=1}^{n}\frac{p^{(i)T}A\beta_j}{p^{(i)T}Ap^{(i)}}p^{(i)}=\sum_{i=1}^{n}\frac{p^{(i)}p^{(i)T}A\beta_j}{p^{(i)T}Ap^{(i)}},\forall j=1,2,\cdots,n
+		\end{equation}
+		所以：
+		\begin{equation}
+		\begin{aligned}
+		A^{-1}&=[\beta_1,\beta_2,\cdots,\beta_n] \\
+		&=\sum_{i=1}^{n}\frac{p^{(i)}p^{(i)T}A[\beta_1,\beta_2,\cdots,\beta_n]}{p^{(i)T}Ap^{(i)}} \\
+		&=\sum_{i=1}^{n}\frac{p^{(i)}p^{(i)T}AA^{-1}}{p^{(i)T}Ap^{(i)}} \\
+		&=\sum_{i=1}^{n}\frac{p^{(i)}p^{(i)T}I}{p^{(i)T}Ap^{(i)}} \\
+		&=\sum_{i=1}^{n}\frac{p^{(i)}p^{(i)}T}{p^{(i)T}Ap^{(i)}} 
+		\end{aligned}
+		\end{equation}
+		即：
+		\begin{equation}
+		A^{-1}=\sum_{i=1}^{n}\frac{p^{(i)}p^{(i)T}}{p^{(i)T}Ap^{(i)}}
+		\end{equation}
+	\end{enumerate}
+\end{proof}
+
+\section{}
+设有非线性规划问题：
+\begin{equation}
+\begin{aligned}
+\min \quad&\frac{1}{2}x^TAx \\
+s.t.\quad &x\ge b
+\end{aligned}
+\end{equation}
+其中$A$为n阶对称正定矩阵。设$\bar{x}$是问题的最优解，证明：$\bar{x}$与$\bar{x}-b$关于$A$共轭
+
+\begin{proof}
+	由于此优化问题是凸规划问题，KKT条件如下：
+	\begin{subequations}
+	\begin{numcases}{}
+	A\bar{x}-w^T=0 \label{subeq1}\\
+	w(\bar{x}-b)=0 \label{subeq2}\\
+	w\ge 0
+	\end{numcases}
+	\end{subequations}
+\end{proof}
+由式\ref{subeq1}可得$w=\bar{x}^TA$，带入式\ref{subeq2}得，$\bar{x}^TA(\bar{x}-b)=0$，即$\bar{x}$与$\bar{x}-b$关于$A$共轭
+\end{document}
